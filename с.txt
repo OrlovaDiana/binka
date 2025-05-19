@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Чат поддержки — Послеродовая депрессия</title>
+    <style>
+        .back-button {
+            background-color: transparent;
+            border: none;
+            color: #A8D5BA;
+            font-size: 1em;
+            cursor: pointer;
+            align-self: flex-start;
+            margin-bottom: 10px;
+            padding: 0;
+            text-decoration: underline;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #e6e6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chat-container {
+            background: white;
+            width: 1300px;
+            height: 700px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            margin: 5px 0;
+        }
+
+        .user {
+            text-align: right;
+            color: #0077cc;
+        }
+
+        .bot {
+            color: #333;
+        }
+
+        form {
+            display: flex;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 1em;
+            border: none;
+            background: #A8D5BA;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <button class="back-button" type="button" onclick="GoBack()">Back</button>
+    <div class="messages" id="chat">
+        <div class="message bot" style="display: flex; align-items: center;">
+            <img src="bobrik.jpg.jpeg" alt="Bot" style="width: 30px; height: 30px; margin-right: 10px; border-radius: 50%;">
+            <span style="background: #f1f1f1; padding: 8px 12px; border-radius: 10px;">
+                Здравствуйте. Я рядом, чтобы выслушать вас. Чем вы хотите поделиться?
+            </span>
+        </div>        
+    </div>
+    <form id="chat-form">
+        <input type="text" id="input" placeholder="Напишите сообщение..." autocomplete="off" />
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+
+<script>
+    const chat = document.getElementById("chat");
+    const form = document.getElementById("chat-form");
+    const input = document.getElementById("input");
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+
+        addMessage(text, "user");
+        addMessage(getBotResponse(text), "bot");
+
+        input.value = "";
+        chat.scrollTop = chat.scrollHeight;
+    });
+    function addMessage(text, sender) {
+    const msg = document.createElement("div");
+    msg.className = `message ${sender}`;
+
+    if (sender === "bot") {
+        msg.innerHTML = `
+            <img src="bobrik.jpg.jpeg" alt="Bot" style="width: 30px; height: 30px; margin-right: 10px; border-radius: 50%;">
+            <span style="background: #f1f1f1; padding: 8px 12px; border-radius: 10px;">${text}</span>
+        `;
+        msg.style.display = "flex";
+        msg.style.alignItems = "center";
+    } else {
+        msg.textContent = text;
+    }
+
+    chat.appendChild(msg);
+}
+
+    function getBotResponse(text) {
+        const lower = text.toLowerCase();
+        if (lower.includes("мне плохо") || lower.includes("один") || lower.includes("грусть")) {
+            return "Это нормально — чувствовать подобное. Я рядом. Хотите поговорить подробнее?";
+        }
+        if (lower.includes("что мне делать")) {
+            return "Попробуйте обратиться к врачу или психологу. Также важно отдыхать и делиться своими чувствами.";
+        }
+        if (lower.includes("спасибо")) {
+            return "Рада помочь. Вы не одиноки.";
+        }
+        return "Спасибо, что делитесь. Расскажите, как вы себя сейчас чувствуете?";
+    }
+    function GoBack(){
+    window.location.href = "welcome.html";
+    }
+</script>
+</body>
+</html>
